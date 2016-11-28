@@ -15,14 +15,41 @@ import simpledb.server.SimpleDB;
  * this class understands the meaning of the log records.
  * @author Edward Sciore
  */
+// TODO: Remove public 
 public class LogRecordIterator implements ListIterator<LogRecord> {
-   private Iterator<BasicLogRecord> iter = SimpleDB.logMgr().iterator();
+   private ListIterator<BasicLogRecord> iter = SimpleDB.logMgr().iterator();
    
    public boolean hasNext() {
       return iter.hasNext();
    }
    
-   
+   @Override
+   public boolean hasPrevious() {
+   	// TODO Auto-generated method stub
+   	return iter.hasPrevious();
+   }
+
+   @Override
+   public LogRecord previous() {
+	  BasicLogRecord rec = iter.previous();
+      int op = rec.nextInt();
+      switch (op) {
+         case CHECKPOINT:
+            return new CheckpointRecord(rec);
+         case START:
+            return new StartRecord(rec);
+         case COMMIT:
+            return new CommitRecord(rec);
+         case ROLLBACK:
+            return new RollbackRecord(rec);
+         case SETINT:
+            return new SetIntRecord(rec);
+         case SETSTRING:
+            return new SetStringRecord(rec);
+         default:
+            return null;
+      }
+   }
    
    /**
     * Constructs a log record from the values in the 
@@ -61,28 +88,10 @@ public class LogRecordIterator implements ListIterator<LogRecord> {
 
 
 @Override
-public boolean hasPrevious() {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-
-
-@Override
-public LogRecord previous() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-
-@Override
 public int nextIndex() {
 	// TODO Auto-generated method stub
 	return 0;
 }
-
-
 
 @Override
 public int previousIndex() {
@@ -90,15 +99,11 @@ public int previousIndex() {
 	return 0;
 }
 
-
-
 @Override
 public void set(LogRecord e) {
 	// TODO Auto-generated method stub
 	
 }
-
-
 
 @Override
 public void add(LogRecord e) {

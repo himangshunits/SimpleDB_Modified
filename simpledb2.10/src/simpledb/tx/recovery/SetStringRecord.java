@@ -36,7 +36,7 @@ class SetStringRecord implements LogRecord {
       blk = new Block(filename, blknum);
       offset = rec.nextInt();
       oldval = rec.nextString();
-      newval = rec.nextString();//TODO: Himangshu : NOt sure
+      newval = rec.nextString();//TODO: Himangshu : Not sure
    }
    
    /** 

@@ -1,4 +1,4 @@
-package simpledb.server;
+package simpledb.client;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -9,6 +9,7 @@ import simpledb.buffer.BufferMgr;
 import simpledb.file.Block;
 import simpledb.remote.RemoteDriver;
 import simpledb.remote.RemoteDriverImpl;
+import simpledb.server.SimpleDB;
 import simpledb.tx.recovery.LogRecord;
 import simpledb.tx.recovery.LogRecordIterator;
 import simpledb.tx.recovery.RecoveryMgr;
@@ -17,14 +18,7 @@ public class TestNewRecoveryFlow {
 
 	public static void main(String args[]) throws Exception {
 	      // configure and initialize the database
-	      SimpleDB.init(args[0]);
-	      
-	      // create a registry specific for the server on the default port
-	      Registry reg = LocateRegistry.createRegistry(1099);
-	      
-	      // and post the server entry in it
-	      RemoteDriver d = new RemoteDriverImpl();
-	      reg.rebind("simpledb", d);
+	      SimpleDB.init("simpleDB");   
 	      
 	      System.out.println("database server ready for Recovery Flow Testing");
 	      //Gget the buffer manager
@@ -50,7 +44,11 @@ public class TestNewRecoveryFlow {
 	      //Using Log Record Iterator to print records .
 	      LogRecordIterator it = new LogRecordIterator();
 	      while(it.hasNext()){
-	    	  System.out.println(it.next()); 
+	    	  System.out.println(it.next());
+	      }
+	      System.out.println("-------------------");
+	      while(it.hasPrevious()){
+	    	  System.out.println(it.previous()); 
 	      }	      
 	   }
 }

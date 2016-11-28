@@ -1,5 +1,4 @@
 package simpledb.server;
-
 import simpledb.remote.*;
 import java.rmi.registry.*;
 

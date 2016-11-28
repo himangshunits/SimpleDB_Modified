@@ -2,6 +2,8 @@
                   General Information and Instructions
 
 
+TLDR; Go to the bottom of the page to read how to run the code
+
 This document contains the following sections:
     * Release Notes
     * Server Installation
@@ -318,4 +320,9 @@ VII. The Organization of the Server Code
    The textbook "Database Design and Implementation" describes these
    packages in considerably more detail. For further information, go
    to the URL www.wiley.com/college/sciore
-   
+  
+  Running Instruction:
+
+  Import this project into Eclipse 
+  and Run as Java Application -> simpledb.client programs.
+

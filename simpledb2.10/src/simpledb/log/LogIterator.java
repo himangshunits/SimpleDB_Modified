@@ -2,7 +2,7 @@ package simpledb.log;
 
 import static simpledb.file.Page.INT_SIZE;
 import simpledb.file.*;
-import java.util.Iterator;
+import simpledb.server.SimpleDB;
 import java.util.ListIterator;
 
 /**
@@ -34,7 +34,7 @@ class LogIterator implements ListIterator<BasicLogRecord> {
     * @return true if there is an earlier record
     */
    public boolean hasNext() {
-      return currentrec>0 || blk.number()>0;
+      return currentrec > LogMgr.LAST_POS || blk.number() > 0;
    }
    
    /**
@@ -45,15 +45,28 @@ class LogIterator implements ListIterator<BasicLogRecord> {
     * @return the next earliest log record
     */
    public BasicLogRecord next() {
-      if (currentrec == 0) 
+      if (currentrec == LogMgr.LAST_POS)
          moveToNextBlock();
       currentrec = pg.getInt(currentrec);
-      return new BasicLogRecord(pg, currentrec+INT_SIZE);
+      return new BasicLogRecord(pg, currentrec + 2*INT_SIZE);
    }
    
-   public void remove() {
-      throw new UnsupportedOperationException();
-   }
+   
+   
+   @Override
+	public boolean hasPrevious() {
+		return pg.getInt(currentrec + INT_SIZE) != -1 || blk.number() < (SimpleDB.fileMgr().size(blk.fileName()) - 1);
+	}
+	
+	@Override
+	public BasicLogRecord previous() {
+		if (pg.getInt(currentrec + INT_SIZE) == -1) 
+			moveToPrevBlock();
+		BasicLogRecord basicLogRecord = new BasicLogRecord(pg, currentrec + 2*INT_SIZE);
+		currentrec = pg.getInt(currentrec + INT_SIZE);
+		return basicLogRecord;
+	}
+	
    
    /**
     * Moves to the next log block in reverse order,
@@ -65,39 +78,41 @@ class LogIterator implements ListIterator<BasicLogRecord> {
       currentrec = pg.getInt(LogMgr.LAST_POS);
    }
 
-@Override
-public boolean hasPrevious() {
-	// TODO Auto-generated method stub
-	return false;
-}
+   /**
+    * Moves to the next log block in forward order,
+    * and positions it after the first record in that block.
+    */
+   private void moveToPrevBlock() {
+	   blk = new Block(blk.fileName(), blk.number()+1);
+	   pg.read(blk);
+	   currentrec = LogMgr.LAST_POS;
+   }
 
-@Override
-public BasicLogRecord previous() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-@Override
-public int nextIndex() {
-	// TODO Auto-generated method stub
-	return 0;
-}
-
-@Override
-public int previousIndex() {
-	// TODO Auto-generated method stub
-	return 0;
-}
-
-@Override
-public void set(BasicLogRecord e) {
-	// TODO Auto-generated method stub
 	
-}
-
-@Override
-public void add(BasicLogRecord e) {
-	// TODO Auto-generated method stub
 	
-}
+	@Override
+	public int nextIndex() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public int previousIndex() {
+		throw new UnsupportedOperationException();
+		
+	}
+	
+	@Override
+	public void set(BasicLogRecord e) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void add(BasicLogRecord e) {
+		throw new UnsupportedOperationException();
+		
+	}
+	@Override
+	public void remove() {
+	      throw new UnsupportedOperationException();
+	}
 }

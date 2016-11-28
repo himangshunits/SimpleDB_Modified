@@ -39,7 +39,9 @@ public class BufferMgr {
       bufferMgr = new BasicBufferMgr(numbuffers);
    }
    
-   /**
+
+
+/**
     * Pins a buffer to the specified block, potentially
     * waiting until a buffer becomes available.
     * If no buffer becomes available within a fixed 
@@ -56,12 +58,13 @@ public class BufferMgr {
             buff = bufferMgr.pin(blk);
          }
          if (buff == null)
-            throw new BufferAbortException();
+            throw new BufferAbortException();         
          return buff;
       }
       catch(InterruptedException e) {
          throw new BufferAbortException();
       }
+      
    }
    
    /**
@@ -120,5 +123,24 @@ public class BufferMgr {
    
    private boolean waitingTooLong(long starttime) {
       return System.currentTimeMillis() - starttime > MAX_TIME;
+   }
+   /**
+   * Determines whether the map has a mapping from
+   * the block to some buffer.
+   * @param the block to use as a key
+   * @return true if there is a mapping; false otherwise
+   */
+   boolean containsMapping(Block blk) 
+   {
+	   	return bufferMgr.containsMapping(blk);
+   }
+   /**
+   * Returns the buffer that the map maps the specified block to.
+   * @param the block to use as a key
+   * @return the buffer mapped to if there is a mapping; null otherwise
+   */
+   Buffer getMapping(Block blk) 
+   {
+   	return bufferMgr.getMapping(blk);
    }
 }

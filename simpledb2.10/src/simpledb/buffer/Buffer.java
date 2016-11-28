@@ -14,8 +14,10 @@ import simpledb.file.*;
  * @author Edward Sciore
  */
 public class Buffer {
+	
    private Page contents = new Page();
    private Block blk = null;
+   private int index = -1;
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
@@ -25,7 +27,7 @@ public class Buffer {
     * {@link simpledb.file.Page page}.  
     * This constructor is called exclusively by the 
     * class {@link BasicBufferMgr}.   
-    * It depends on  the 
+    * It depends on the 
     * {@link simpledb.log.LogMgr LogMgr} object 
     * that it gets from the class
     * {@link simpledb.server.SimpleDB}.
@@ -35,6 +37,8 @@ public class Buffer {
     * is called first.
     */
    public Buffer() {}
+   
+   public Buffer(int i) { index = i; }
    
    /**
     * Returns the integer value at the specified offset of the
@@ -187,4 +191,14 @@ public class Buffer {
       blk = contents.append(filename);
       pins = 0;
    }
+
+public int getIndex() {
+	// TODO Auto-generated method stub
+	return index;
+}
+
+@Override
+public String toString() {
+	return "Buffer["+index + "],pins="+pins;
+}
 }
