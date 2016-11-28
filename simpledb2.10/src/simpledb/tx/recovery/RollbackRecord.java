@@ -53,4 +53,13 @@ class RollbackRecord implements LogRecord {
    public String toString() {
       return "<ROLLBACK " + txnum + ">";
    }
+
+   /**
+    * Does nothing, because a rollback record
+    * contains no redo information.
+    */
+   @Override
+   public void redo(int txnum) {
+	   // TODO Auto-generated method stub
+   }
 }

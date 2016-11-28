@@ -49,4 +49,13 @@ class StartRecord implements LogRecord {
    public String toString() {
       return "<START " + txnum + ">";
    }
+
+   /**
+    * Does nothing, because a start record
+    * contains no redo information.
+    */
+    @Override
+    public void redo(int txnum) {
+	    // TODO Auto-generated method stub
+	}
 }

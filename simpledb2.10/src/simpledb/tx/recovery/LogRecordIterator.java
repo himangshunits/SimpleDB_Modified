@@ -2,6 +2,8 @@ package simpledb.tx.recovery;
 
 import static simpledb.tx.recovery.LogRecord.*;
 import java.util.Iterator;
+import java.util.ListIterator;
+
 import simpledb.log.BasicLogRecord;
 import simpledb.server.SimpleDB;
 
@@ -13,12 +15,14 @@ import simpledb.server.SimpleDB;
  * this class understands the meaning of the log records.
  * @author Edward Sciore
  */
-class LogRecordIterator implements Iterator<LogRecord> {
+public class LogRecordIterator implements ListIterator<LogRecord> {
    private Iterator<BasicLogRecord> iter = SimpleDB.logMgr().iterator();
    
    public boolean hasNext() {
       return iter.hasNext();
    }
+   
+   
    
    /**
     * Constructs a log record from the values in the 
@@ -53,4 +57,52 @@ class LogRecordIterator implements Iterator<LogRecord> {
    public void remove() {
       throw new UnsupportedOperationException();
    }
+
+
+
+@Override
+public boolean hasPrevious() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+
+
+@Override
+public LogRecord previous() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
+
+@Override
+public int nextIndex() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+
+
+@Override
+public int previousIndex() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+
+
+@Override
+public void set(LogRecord e) {
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+@Override
+public void add(LogRecord e) {
+	// TODO Auto-generated method stub
+	
+}
 }

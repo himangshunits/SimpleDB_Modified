@@ -67,7 +67,7 @@ public class RecoveryMgr {
       if (isTempBlock(blk))
          return -1;
       else
-         return new SetIntRecord(txnum, blk, offset, oldval).writeToLog();
+         return new SetIntRecord(txnum, blk, offset, oldval, newval).writeToLog();
    }
 
    /**
@@ -84,7 +84,7 @@ public class RecoveryMgr {
       if (isTempBlock(blk))
          return -1;
       else
-         return new SetStringRecord(txnum, blk, offset, oldval).writeToLog();
+         return new SetStringRecord(txnum, blk, offset, oldval, newval).writeToLog();
    }
 
    /**
@@ -95,7 +95,7 @@ public class RecoveryMgr {
     * until it finds the transaction's START record.
     */
    private void doRollback() {
-      Iterator<LogRecord> iter = new LogRecordIterator();
+      ListIterator<LogRecord> iter = new LogRecordIterator();
       while (iter.hasNext()) {
          LogRecord rec = iter.next();
          if (rec.txNumber() == txnum) {
@@ -112,20 +112,34 @@ public class RecoveryMgr {
     * Whenever it finds a log record for an unfinished
     * transaction, it calls undo() on that record.
     * The method stops when it encounters a CHECKPOINT record
-    * or the end of the log.
+    * or the end of the log. It also implements the Redo algorithm and redoes all the committed transactions.
     */
    private void doRecover() {
-      Collection<Integer> finishedTxs = new ArrayList<Integer>();
-      Iterator<LogRecord> iter = new LogRecordIterator();
+	   // TODO : Himangshu : Replace the arrayList by hashSet for faster searching if the txNum are not duplicate
+	   // Make this sure replace.
+	   Collection<Integer> committedTxs = new ArrayList<Integer>();
+	   Collection<Integer> rollbackTxs = new ArrayList<Integer>();
+	   // The Undo stage below.
+      ListIterator<LogRecord> iter = new LogRecordIterator();
       while (iter.hasNext()) {
          LogRecord rec = iter.next();
          if (rec.op() == CHECKPOINT)
             return;
-         if (rec.op() == COMMIT || rec.op() == ROLLBACK)
-            finishedTxs.add(rec.txNumber());
-         else if (!finishedTxs.contains(rec.txNumber()))
+         if (rec.op() == COMMIT){
+        	 committedTxs.add(rec.txNumber());
+         } else if (rec.op() == ROLLBACK){
+        	 rollbackTxs.add(rec.txNumber());
+         } else if ((rec.op() == SETSTRING || rec.op() == SETSTRING) && !committedTxs.contains(rec.txNumber()) && !rollbackTxs.contains(rec.txNumber()))
             rec.undo(txnum);
       }
+      // Redo Phase below TODO : Himangshu : Do we have to capture the checkpoint and start from there?
+      // Make Sure here we are traversing from the correct point. TODO : Himangshu
+      while (iter.hasPrevious()) {
+          LogRecord rec = iter.previous();
+          if ((rec.op() == SETSTRING || rec.op() == SETSTRING) && committedTxs.contains(rec.txNumber())){
+        	  rec.redo(txnum);
+          }
+      }      
    }
 
    /**

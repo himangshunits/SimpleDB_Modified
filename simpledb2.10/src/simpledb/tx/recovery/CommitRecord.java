@@ -53,4 +53,12 @@ class CommitRecord implements LogRecord {
    public String toString() {
       return "<COMMIT " + txnum + ">";
    }
+   /**
+    * Does nothing, because a commit record
+    * contains no redo information.
+    */
+   @Override
+   public void redo(int txnum) {
+		// TODO Auto-generated method stub
+   }
 }

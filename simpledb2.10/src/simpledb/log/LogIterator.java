@@ -3,6 +3,7 @@ package simpledb.log;
 import static simpledb.file.Page.INT_SIZE;
 import simpledb.file.*;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * A class that provides the ability to move through the
@@ -10,7 +11,7 @@ import java.util.Iterator;
  * 
  * @author Edward Sciore
  */
-class LogIterator implements Iterator<BasicLogRecord> {
+class LogIterator implements ListIterator<BasicLogRecord> {
    private Block blk;
    private Page pg = new Page();
    private int currentrec;
@@ -63,4 +64,40 @@ class LogIterator implements Iterator<BasicLogRecord> {
       pg.read(blk);
       currentrec = pg.getInt(LogMgr.LAST_POS);
    }
+
+@Override
+public boolean hasPrevious() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+@Override
+public BasicLogRecord previous() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public int nextIndex() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int previousIndex() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public void set(BasicLogRecord e) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void add(BasicLogRecord e) {
+	// TODO Auto-generated method stub
+	
+}
 }
