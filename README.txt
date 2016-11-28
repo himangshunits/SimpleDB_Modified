@@ -2,7 +2,6 @@
                   General Information and Instructions
 
 
-TLDR; Go to the bottom of the page to read how to run the code
 
 This document contains the following sections:
     * Release Notes
