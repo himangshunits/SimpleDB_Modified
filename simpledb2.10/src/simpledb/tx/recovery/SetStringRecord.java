@@ -49,7 +49,7 @@ class SetStringRecord implements LogRecord {
     */
    public int writeToLog() {
       Object[] rec = new Object[] {SETSTRING, txnum, blk.fileName(),
-         blk.number(), offset, oldval, newval};//TODO : Himangshu : Not sure
+         blk.number(), offset, oldval, newval};
       return logMgr.append(rec);
    }
    
