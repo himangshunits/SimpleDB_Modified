@@ -18,7 +18,7 @@ public class TestNewRecoveryFlow {
 
 	public static void main(String args[]) throws Exception {
 	      // configure and initialize the database
-	      SimpleDB.init("simpleDB");   
+	      SimpleDB.init(args[0]);   
 	      
 	      System.out.println("database server ready for Recovery Flow Testing");
 	      //Gget the buffer manager
