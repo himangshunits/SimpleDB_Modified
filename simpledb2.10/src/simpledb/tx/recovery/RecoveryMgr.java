@@ -115,7 +115,7 @@ public class RecoveryMgr {
     * or the end of the log. It also implements the Redo algorithm and redoes all the committed transactions.
     */
    private void doRecover() {
-	   // TODO : It would be a better implmentation if the data structure is changed to hashset for O(1) complexity.
+	   // TODO : It would be a better implementation if the data structure is changed to HashSet for O(1) complexity.
 	   Collection<Integer> committedTxs = new ArrayList<Integer>();
 	   Collection<Integer> rollbackTxs = new ArrayList<Integer>();
 	   // The Undo stage below.
@@ -128,13 +128,13 @@ public class RecoveryMgr {
         	 committedTxs.add(rec.txNumber());
          } else if (rec.op() == ROLLBACK){
         	 rollbackTxs.add(rec.txNumber());
-         } else if ((rec.op() == SETSTRING || rec.op() == SETSTRING) && !committedTxs.contains(rec.txNumber()) && !rollbackTxs.contains(rec.txNumber()))
+         } else if ((rec.op() == SETSTRING || rec.op() == SETINT) && !committedTxs.contains(rec.txNumber()) && !rollbackTxs.contains(rec.txNumber()))
             rec.undo(txnum);
       }
       // Redo Phase below
       while (iter.hasPrevious()) {
           LogRecord rec = iter.previous();
-          if ((rec.op() == SETSTRING || rec.op() == SETSTRING) && committedTxs.contains(rec.txNumber())){
+          if ((rec.op() == SETSTRING || rec.op() == SETINT) && committedTxs.contains(rec.txNumber())){
         	  rec.redo(txnum);
           }
       }      
