@@ -13,6 +13,8 @@ Akash Mehta - amehta7
 
 ### List of files Changed : 
 
+[Github Repo - SimpleDB_Modified](https://github.com/himangshunits/SimpleDB_Modified)
+
 *Note* : We have made some changes in the directory structure of the simpledb server and simpledbclient so that it's convenient to import the structure to eclipse or any other IDE and start using it instantly. For importing into Eclipse,
 
 1. Unzip the Files in te ZIP archive.
@@ -42,9 +44,13 @@ simpledb2.10/src/simpledb/tx/recovery/SetStringRecord.java
 simpledb2.10/src/simpledb/tx/recovery/StartRecord.java
 ```
 
+## Testing
+
+The entry point for testing the functionality is [TestCasesDriver.java](https://github.com/himangshunits/SimpleDB_Modified/blob/master/simpledb2.10/src/simpledb/client/TestCasesDriver.java) which has two children : [TestNewBufferManagementFlow.java](https://github.com/himangshunits/SimpleDB_Modified/blob/master/simpledb2.10/src/simpledb/client/TestNewBufferManagementFlow.java) for Buffer Replacement Policy and [TestNewRecoveryFlow.java](https://github.com/himangshunits/SimpleDB_Modified/blob/master/simpledb2.10/src/simpledb/client/TestNewRecoveryFlow.java) for LogRecordIterator and Recovery.
+
 ### Testing for Part 1 - Buffer Replacement Policy
 
-Please check the testBufferReplacementPolicy() function in [TestFlow.java](https://github.com/himangshunits/SimpleDB_Modified/blob/master/simpledb2.10/src/simpledb/client/TestNewBufferManagementFlow.java)
+Please check the testBufferReplacementPolicy() function in [TestNewBufferManagementFlow.java](https://github.com/himangshunits/SimpleDB_Modified/blob/master/simpledb2.10/src/simpledb/client/TestNewBufferManagementFlow.java)
 
 A test suite is written which simulates a sample test scenario:  
 
@@ -121,11 +127,11 @@ Replacement Policy validated.
 
 We have made some significant changes in the structure of the code. Upon realization of the limitation of the Iterator Class - which has the capability of going only in forward direction, we changed it to the new ListIterator Class - which has the capabilities of moving in both forward and backward direction.
 
-The entry point for testing the functionality is []() which has two children : []() and []().
 
 The test scenario is as follows:
 
-1. 
+1. The transaction 1 is committed and the transaction 2 is not committed and thus, the changes made by transaction 1 are restored. 
+2. The transaction 1 is committed and the transaction 2 is also committed and thus, the changes made by transaction 2 persists. 
 
 ```
 Output for LogIterator:
@@ -148,7 +154,3 @@ Flow2 :: Contents of Block after committed transaction
 The INTEGER is = 4321
 The STRING is = World
 ```
-
-Running Instruction:
-Import this project into Eclipse and Run as Java Application -> simpledb.client programs.
-                                                            
