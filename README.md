@@ -1,7 +1,8 @@
 # SimpleDB_Modified
 
 ### Unity ID : 
-Himangshu Borah - hborah
+
+Himangshu Ranjan Borah - hborah
 
 Rahul Shah - rshah5
 
@@ -12,7 +13,34 @@ Akash Mehta - amehta7
 
 ### List of files Changed : 
 
-[TODO - run ```git diff --name-only dedc91f3da1643e8802a4431a632e187f0f4acf3``` after final commit. ]
+*Note* : We have made some changes in the directory structure of the simpledb server and simpledbclient so that it's convenient to import the structure to eclipse or any other IDE and start using it instantly. For importing into Eclipse,
+
+1. Unzip the Files in te ZIP archive.
+2. In Eclipse, import from exsiting source, and point to the unzipped folder above, it will show 2 projects, import both.
+3. Open simpledb.client package, and right click on TestCasesDriver.java, add a run configuration with arguments of your choice, this argument value will be the folder in your home directory where SimpleDB's control files will be stored.
+4. Run or Debug with this configuration, this will simulate all the required Test Flows.
+
+```
+simpledb2.10/src/simpledb/buffer/BasicBufferMgr.java
+simpledb2.10/src/simpledb/buffer/Buffer.java
+simpledb2.10/src/simpledb/buffer/BufferMgr.java
+simpledb2.10/src/simpledb/client/CreateStudentDB.java
+simpledb2.10/src/simpledb/client/TestCasesDriver.java
+simpledb2.10/src/simpledb/client/TestNewBufferManagementFlow.java
+simpledb2.10/src/simpledb/client/TestNewRecoveryFlow.java
+simpledb2.10/src/simpledb/log/LogIterator.java
+simpledb2.10/src/simpledb/log/LogMgr.java
+simpledb2.10/src/simpledb/server/Startup.java
+simpledb2.10/src/simpledb/tx/recovery/CheckpointRecord.java
+simpledb2.10/src/simpledb/tx/recovery/CommitRecord.java
+simpledb2.10/src/simpledb/tx/recovery/LogRecord.java
+simpledb2.10/src/simpledb/tx/recovery/LogRecordIterator.java
+simpledb2.10/src/simpledb/tx/recovery/RecoveryMgr.java
+simpledb2.10/src/simpledb/tx/recovery/RollbackRecord.java
+simpledb2.10/src/simpledb/tx/recovery/SetIntRecord.java
+simpledb2.10/src/simpledb/tx/recovery/SetStringRecord.java
+simpledb2.10/src/simpledb/tx/recovery/StartRecord.java
+```
 
 ### Testing for Part 1 - Buffer Replacement Policy
 
@@ -27,11 +55,99 @@ A test suite is written which simulates a sample test scenario:
 5. Couple of buffers are unpinned and again an attempt to pin a buffer is made. Buffer pinned successfully.
 6. Replacement policy tested by correctly outputting which buffer is pinned next.
 
+```
+---------TEST-1----------
+Created File Blocks.
+
+---------TEST-2----------
+8
+
+---------TEST-3----------
+New buffer allocated
+Buffer used is 1
+Available buffers : 7
+
+New buffer allocated
+Buffer used is 2
+Available buffers : 6
+
+New buffer allocated
+Buffer used is 3
+Available buffers : 5
+
+New buffer allocated
+Buffer used is 4
+Available buffers : 4
+
+New buffer allocated
+Buffer used is 5
+Available buffers : 3
+
+New buffer allocated
+Buffer used is 6
+Available buffers : 2
+
+New buffer allocated
+Buffer used is 7
+Available buffers : 1
+
+New buffer allocated
+Buffer used is 8
+Available buffers : 0
+
+
+---------TEST-4----------
+No available buffers. Still attempting to pin a block.
+****** Buffer Abort Exception thrown - TimedOut ******
+
+---------TEST-5----------
+Unpinned buffer 7
+Unpinned buffer 6
+Buffer used is 6
+Successfully pinned a buffer after unpinning couple of buffers
+
+---------TEST-6----------
+Unpinned buffer 3
+Unpinned buffer 2
+Available buffers : 3
+Buffers 2, 3 and 7 are available. Unpinned in reverse orders. Thus, according to replacement policy, Buffer 2 should be replaced first, followed by Buffer 3 and Buffer 7.
+Buffer used is 2
+Buffer used is 3
+Buffer used is 7
+Replacement Policy validated.
+```
 
 ### Testing for Part 2 - LogRecordIterator and Recovery
 
-[TODO - Add description]
+We have made some significant changes in the structure of the code. Upon realization of the limitation of the Iterator Class - which has the capability of going only in forward direction, we changed it to the new ListIterator Class - which has the capabilities of moving in both forward and backward direction.
 
+The entry point for testing the functionality is []() which has two children : []() and []().
+
+The test scenario is as follows:
+
+1. 
+
+```
+Output for LogIterator:
+--------
+The Equality for reverse and forward logs = true
+
+Output for Recovery:
+--------
+The Equality Status = true
+Flow1 :: Contents of Block before uncommitted transaction
+The INTEGER is = 1234
+The STRING is = Hello
+Flow1 :: Contents of Block after uncommitted transaction
+The INTEGER is = 1234
+The STRING is = Hello
+Flow2 :: Contents of Block before committed transaction
+The INTEGER is = 1234
+The STRING is = Hello
+Flow2 :: Contents of Block after committed transaction
+The INTEGER is = 4321
+The STRING is = World
+```
 
 Running Instruction:
 Import this project into Eclipse and Run as Java Application -> simpledb.client programs.
