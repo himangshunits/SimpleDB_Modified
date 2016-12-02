@@ -13,7 +13,7 @@ Akash Mehta - amehta7
 
 ### List of files Changed : 
 
-[Github Repo - SimpleDB_Modified](https://github.com/himangshunits/SimpleDB_Modified)
+[Github Repo - SimpleDB_Modified](https://github.com/himangshunits/SimpleDB_Modified) - It is a private repository, thus please contact Himangshu Ranjan Borah (hborah@ncsu.edu) to request access. 
 
 *Note* : We have made some changes in the directory structure of the simpledb server and simpledbclient so that it's convenient to import the structure to eclipse or any other IDE and start using it instantly. For importing into Eclipse,
 
